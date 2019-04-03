@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 export const Container = ({
@@ -31,11 +31,14 @@ Container.propTypes = {
   }).isRequired,
   style: PropTypes.object,
   className: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };
 
 Container.defaultProps = {
-  style: null,
+  style: {},
   className: undefined,
   children: undefined,
 };

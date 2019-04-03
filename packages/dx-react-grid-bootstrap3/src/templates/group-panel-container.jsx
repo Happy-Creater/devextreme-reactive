@@ -1,12 +1,11 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export const GroupPanelContainer = ({ children, style, ...restProps }) => (
+export const GroupPanelContainer = ({ children, ...restProps }) => (
   <div
     style={{
       width: '100%',
       marginTop: '5px',
-      ...style,
     }}
     {...restProps}
   >
@@ -15,11 +14,13 @@ export const GroupPanelContainer = ({ children, style, ...restProps }) => (
 );
 
 GroupPanelContainer.propTypes = {
-  children: PropTypes.node,
-  style: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 GroupPanelContainer.defaultProps = {
-  children: undefined,
-  style: null,
+  children: null,
 };
+

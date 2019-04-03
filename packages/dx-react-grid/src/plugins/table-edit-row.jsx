@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Getter, Template, TemplatePlaceholder, TemplateConnector, Plugin,
 } from '@devexpress/dx-react-core';

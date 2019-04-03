@@ -13,49 +13,51 @@ A plugin that renders detail rows.
 
 Name | Type | Default | Description
 -----|------|---------|------------
-contentComponent? | ComponentType&lt;[TableRowDetail.ContentProps](#tablerowdetailcontentprops)&gt; | | A component that renders the detail row's content within the detail cell.
-cellComponent | ComponentType&lt;[TableRowDetail.CellProps](#tablerowdetailcellprops)&gt; | | A component that renders a detail cell.
-rowComponent | ComponentType&lt;[TableRowDetail.RowProps](#tablerowdetailrowprops)&gt; | | A component that renders a detail row.
-toggleCellComponent | ComponentType&lt;[TableRowDetail.ToggleCellProps](#tablerowdetailtogglecellprops)&gt; | | A component that renders a cell containing the expand/collapse control.
+contentComponent | ElementType&lt;[DetailContentProps](#detailcontentprops)&gt; | | A component that renders the detail row's content within the detail cell.
+cellComponent | ElementType&lt;[TableDetailCellProps](#tabledetailcellprops)&gt; | | A component that renders a detail cell.
+rowComponent | ElementType&lt;[TableDetailRowProps](#tabledetailrowprops)&gt; | | A component that renders a detail row.
+toggleCellComponent | ElementType&lt;[TableDetailToggleCellProps](#tabledetailtogglecellprops)&gt; | | A component that renders a cell containing the expand/collapse control.
 toggleColumnWidth | number | | Specifies the width of the column containing expand/collapse controls.
-rowHeight? | number | | Specifies the detail row height.
+rowHeight | number | | Specifies the detail row height.
 
 ## Interfaces
 
-### TableRowDetail.ContentProps
+### DetailContentProps
 
 Describes properties passed to a component that renders a detail row's content.
 
+A value with the following shape:
+
 Field | Type | Description
 ------|------|------------
 row | any | A row.
 
-### TableRowDetail.CellProps
+### TableDetailCellProps
 
 Describes properties passed to a component that renders a detail cell.
 
-Extends [Table.CellProps](table.md#tablecellprops)
+A value with the [TableCellProps](table.md#tablecellprops) shape extended by the following fields:
 
 Field | Type | Description
 ------|------|------------
 row | any | A row.
-children? | ReactNode | A detail cell's child React node.
+children? | ReactElement | A detail cell's child React element.
 
-### TableRowDetail.RowProps
+### TableDetailRowProps
 
 Describes properties passed to a component that renders a detail row.
 
-Extends [Table.RowProps](table.md#tablerowprops)
+A value with the [TableRowProps](table.md#tablerowprops) shape extended by the following fields:
 
 Field | Type | Description
 ------|------|------------
 row | any | A row.
 
-### TableRowDetail.ToggleCellProps
+### TableDetailToggleCellProps
 
 Describes properties passed to a component that renders a cell containing the expand/collapse control.
 
-Extends [Table.CellProps](table.md#tablecellprops)
+A value with the [TableCellProps](table.md#tablecellprops) shape extended by the following fields:
 
 Field | Type | Description
 ------|------|------------
@@ -67,9 +69,9 @@ onToggle | () => void | An event that initiates row expanding or collapsing.
 
 Name | Properties | Description
 -----|------------|------------
-TableRowDetail.Cell | [TableRowDetail.CellProps](#tablerowdetailcellprops) | A component that renders a detail cell.
-TableRowDetail.Row | [TableRowDetail.RowProps](#tablerowdetailrowprops) | A component that renders a detail row.
-TableRowDetail.ToggleCell | [TableRowDetail.ToggleCellProps](#tablerowdetailtogglecellprops) | A component that renders a cell containing the expand/collapse control.
+TableRowDetail.Cell | [TableDetailCellProps](#tabledetailcellprops) | A component that renders a detail cell.
+TableRowDetail.Row | [TableDetailRowProps](#tabledetailrowprops) | A component that renders a detail row.
+TableRowDetail.ToggleCell | [TableDetailToggleCellProps](#tabledetailtogglecellprops) | A component that renders a cell containing the expand/collaps control.
 
 If you specify additional properties, they are added to the component's root element.
 
@@ -83,8 +85,8 @@ tableColumns | Getter | Array&lt;[TableColumn](table.md#tablecolumn)&gt; | Table
 tableBodyRows | Getter | Array&lt;[TableRow](table.md#tablerow)&gt; | Body rows to be rendered.
 expandedDetailRowIds | Getter | Array&lt;number &#124; string&gt; | Expanded rows IDs.
 toggleDetailRowExpanded | Action | ({ rowId }) => void | Expands/collapses the specified row.
-tableCell | Template | [Table.CellProps](table.md#tablecellprops) | A template that renders a table cell.
-tableRow | Template | [Table.RowProps](table.md#tablerowprops) | A template that renders a table row.
+tableCell | Template | [TableCellProps](table.md#tablecellprops) | A template that renders a table cell.
+tableRow | Template | [TableRowProps](table.md#tablerowprops) | A template that renders a table row.
 
 ### Exports
 

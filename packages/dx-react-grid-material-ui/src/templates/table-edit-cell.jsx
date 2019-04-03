@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Input from 'material-ui/Input';
 import { TableCell } from 'material-ui/Table';
@@ -53,7 +53,10 @@ EditCellBase.propTypes = {
   onValueChange: PropTypes.func.isRequired,
   style: PropTypes.object,
   classes: PropTypes.object.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
   className: PropTypes.string,
 };
 
@@ -63,7 +66,7 @@ EditCellBase.defaultProps = {
   tableRow: undefined,
   tableColumn: undefined,
   value: '',
-  style: null,
+  style: {},
   children: undefined,
   className: undefined,
 };

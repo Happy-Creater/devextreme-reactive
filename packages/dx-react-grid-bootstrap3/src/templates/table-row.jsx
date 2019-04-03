@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export const TableRow = ({
   children, row, tableRow, tableColumn,
@@ -20,7 +20,7 @@ TableRow.propTypes = {
 };
 
 TableRow.defaultProps = {
-  children: undefined,
+  children: null,
   row: undefined,
   tableColumn: undefined,
   tableRow: undefined,

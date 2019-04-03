@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Input from 'material-ui/Input';
 import { TableCell } from 'material-ui/Table';
 import { createShallow, getClasses } from 'material-ui/test-utils';
