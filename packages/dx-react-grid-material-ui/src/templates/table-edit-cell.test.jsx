@@ -1,14 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import Input from 'material-ui/Input';
 import { TableCell } from 'material-ui/Table';
 import { createShallow, getClasses } from 'material-ui/test-utils';
 import { EditCell } from './table-edit-cell';
 
 describe('EditCell', () => {
-  const defaultProps = {
-    onValueChange: () => {},
-  };
-
   let shallow;
   let classes;
 
@@ -20,8 +16,8 @@ describe('EditCell', () => {
   it('should render without exceptions', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
         value=""
+        onValueChange={() => {}}
       />
     ));
     expect(tree.find(`.${classes.cell}`).exists()).toBeTruthy();
@@ -50,8 +46,8 @@ describe('EditCell', () => {
   it('should take column align into account', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
         value=""
+        onValueChange={() => {}}
       />
     ));
 
@@ -65,8 +61,8 @@ describe('EditCell', () => {
   it('should take column align into account if align is "right"', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
         value=""
+        onValueChange={() => {}}
         tableColumn={{ align: 'right' }}
       />
     ));
@@ -79,8 +75,8 @@ describe('EditCell', () => {
   it('should pass style to the root element', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
         value="a"
+        onValueChange={() => {}}
         style={{
           width: '40px',
           height: '10px',
@@ -97,7 +93,7 @@ describe('EditCell', () => {
   it('should render children if passed', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
+        onValueChange={() => {}}
       >
         <span className="test" />
       </EditCell>
@@ -110,7 +106,7 @@ describe('EditCell', () => {
   it('should pass the className prop to the root element', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
+        onValueChange={() => {}}
         className="custom-class"
       />
     ));
@@ -124,24 +120,12 @@ describe('EditCell', () => {
   it('should pass rest props to the root element', () => {
     const tree = shallow((
       <EditCell
-        {...defaultProps}
+        onValueChange={() => {}}
         data={{ a: 1 }}
       />
     ));
 
     expect(tree.props().data)
       .toMatchObject({ a: 1 });
-  });
-
-  it('should render disabled editor if editing is not allowed', () => {
-    const tree = shallow((
-      <EditCell
-        {...defaultProps}
-        editingEnabled={false}
-      />
-    ));
-
-    expect(tree.find(Input).prop('disabled'))
-      .toBeTruthy();
   });
 });

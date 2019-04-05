@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { createShallow, getClasses } from 'material-ui/test-utils';
 import { Pager } from './pager';
 import { Pagination } from './pagination';

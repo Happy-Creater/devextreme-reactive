@@ -1,29 +1,25 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 export const Item = ({
   item: { column, hidden },
   onToggle,
   className,
-  style,
-  disabled,
   ...restProps
 }) => (
   <button
     className={classNames('list-group-item', className)}
-    style={{ outline: 'none', ...style }}
+    style={{ outline: 'none' }}
     type="button"
-    disabled={disabled}
     onClick={onToggle}
     {...restProps}
   >
     <input
       type="checkbox"
-      style={{ cursor: disabled ? 'default' : 'pointer' }}
+      style={{ cursor: 'pointer' }}
       tabIndex={-1}
       checked={!hidden}
-      disabled={disabled}
       onChange={onToggle}
       onClick={e => e.stopPropagation()}
     />
@@ -39,15 +35,11 @@ Item.propTypes = {
     }),
     hidden: PropTypes.bool,
   }).isRequired,
-  disabled: PropTypes.bool,
   onToggle: PropTypes.func,
   className: PropTypes.string,
-  style: PropTypes.object,
 };
 
 Item.defaultProps = {
   onToggle: () => {},
-  disabled: false,
   className: undefined,
-  style: null,
 };

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { createShallow, getClasses } from 'material-ui/test-utils';
 import { setupConsole } from '@devexpress/dx-testing';
 import { Draggable } from '@devexpress/dx-react-core';
@@ -8,7 +8,6 @@ const defaultProps = {
   onWidthChange: () => {},
   onWidthDraft: () => {},
   onWidthDraftCancel: () => {},
-  resizeHandleOpacityClass: 'test',
 };
 
 describe('ResizingControl', () => {

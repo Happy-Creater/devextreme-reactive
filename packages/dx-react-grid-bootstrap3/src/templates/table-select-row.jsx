@@ -1,21 +1,21 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export const TableSelectRow = ({
-  selected, selectByRowClick, onToggle,
-  children, className,
-  row, tableRow, tableColumn,
-  ...restProps
+  selected,
+  children,
+  style,
+  onToggle,
+  selectByRowClick,
 }) => (
   <tr
-    className={classNames(selected ? 'active' : '', className)}
+    style={style}
+    className={selected ? 'active' : ''}
     onClick={(e) => {
       if (!selectByRowClick) return;
       e.stopPropagation();
       onToggle();
     }}
-    {...restProps}
   >
     {children}
   </tr>
@@ -26,19 +26,13 @@ TableSelectRow.propTypes = {
   children: PropTypes.node,
   onToggle: PropTypes.func,
   selectByRowClick: PropTypes.bool,
-  className: PropTypes.string,
-  row: PropTypes.object,
-  tableColumn: PropTypes.object,
-  tableRow: PropTypes.object,
+  style: PropTypes.object,
 };
 
 TableSelectRow.defaultProps = {
-  children: undefined,
+  children: null,
   onToggle: () => {},
   selected: false,
   selectByRowClick: false,
-  className: undefined,
-  row: undefined,
-  tableColumn: undefined,
-  tableRow: undefined,
+  style: null,
 };

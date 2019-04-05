@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import { createMount, createShallow, getClasses } from 'material-ui/test-utils';
 import { setupConsole } from '@devexpress/dx-testing';

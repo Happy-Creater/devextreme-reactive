@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { DragDropProvider, DragSource } from '@devexpress/dx-react-core';
 import { setupConsole } from '@devexpress/dx-testing';

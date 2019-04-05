@@ -8,10 +8,6 @@ A plugin that performs built-in selection.
 
 - [SelectionState](selection-state.md)
 
-### Properties
-
-none
-
 ## Plugin Developer Reference
 
 ### Imports

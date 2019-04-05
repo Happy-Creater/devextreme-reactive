@@ -12,13 +12,15 @@ A plugin that performs built-in data filtering.
 
 Name | Type | Default | Description
 -----|------|---------|------------
-columnExtensions? | Array&lt;[IntegratedFiltering.ColumnExtension](#integratedfilteringcolumnextension)&gt; | | Additional column properties that the plugin can handle.
+columnExtensions | Array&lt;[IntegratedFilteringColumnExtension](#integratedfilteringcolumnextension)&gt; | | Additional column properties that the plugin can handle.
 
 ## Interfaces
 
-### IntegratedFiltering.ColumnExtension
+### IntegratedFilteringColumnExtension
 
 Describes additional column properties that the plugin can handle.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------

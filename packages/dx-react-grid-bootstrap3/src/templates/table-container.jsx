@@ -1,14 +1,14 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export const TableContainer = ({ children, style, ...restProps }) => (
+export const TableContainer = ({ children, ...restProps }) => (
   <div
     className="table-responsive"
     {...restProps}
     style={{
+      ...restProps.style,
       overflow: 'auto',
       WebkitOverflowScrolling: 'touch',
-      ...style,
     }}
   >
     {children}
@@ -16,10 +16,8 @@ export const TableContainer = ({ children, style, ...restProps }) => (
 );
 
 TableContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  style: PropTypes.object,
-};
-
-TableContainer.defaultProps = {
-  style: null,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

@@ -12,23 +12,27 @@ none
 
 Name | Type | Default | Description
 -----|------|---------|------------
-containerComponent | ComponentType&lt;[DragDropProvider.ContainerProps](#dragdropprovidercontainerprops)&gt; | | A component that renders a container for columns being dragged.
-columnComponent | ComponentType&lt;[DragDropProvider.ColumnProps](#dragdropprovidercolumnprops)&gt; | | A component that renders a column being dragged.
+containerComponent | ElementType&lt;[ContainerProps](#containerprops)&gt; | | A component that renders a container for columns being dragged.
+columnComponent | ElementType&lt;[ColumnProps](#columnprops)&gt; | | A component that renders a column being dragged.
 
 ## Interfaces
 
-### DragDropProvider.ContainerProps
+### ContainerProps
 
 Describes properties of the component that renders a container for columns being dragged.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
 clientOffset | { x: number, y: number } | The current offset of a column that is being dragged. The offset is measured against the application's client area.
-children | ReactNode | A React node representing columns being dragged.
+children | ReactElement &#124; Array&lt;ReactElement&gt; | A React element or a React element array representing columns being dragged.
 
-### DragDropProvider.ColumnProps
+### ColumnProps
 
 Describes properties of the component that renders a column being dragged.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
@@ -38,8 +42,8 @@ column | [Column](grid.md#column) | Specifies a column being dragged.
 
 Name | Properties | Description
 -----|------------|------------
-DragDropProvider.Container | [DragDropProvider.ContainerProps](#dragdropprovidercontainerprops) | A component that renders a container for columns being dragged.
-DragDropProvider.Column | [DragDropProvider.ColumnProps](#dragdropprovidercolumnprops) | A component that renders a column being dragged.
+DragDropProvider.Container | [ContainerProps](#containerprops) | A component that renders a container for columns being dragged.
+DragDropProvider.Column | [ColumnProps](#columnprops) | A component that renders a column being dragged.
 
 If you specify additional properties, they are added to the component's root element.
 

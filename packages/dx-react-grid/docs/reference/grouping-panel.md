@@ -17,12 +17,12 @@ Optionally, the plugin allows an end-user to change grouped columns' sorting ord
 
 Name | Type | Default | Description
 -----|------|---------|------------
-showSortingControls? | boolean | false | Specifies whether to render controls that toggle the column's sorting state. Requires the [SortingState](sorting-state.md) dependency.
-showGroupingControls? | boolean | false | Specifies whether column headers display a button that cancels grouping by that column.
-containerComponent | ComponentType&lt;[GroupingPanel.ContainerProps](#groupingpanelcontainerprops)&gt; | | A component that renders a group panel container.
-itemComponent | ComponentType&lt;[GroupingPanel.ItemProps](#groupingpanelitemprops)&gt; | | A component that renders a group panel item.
-emptyMessageComponent | ComponentType&lt;[GroupingPanel.EmptyMessageProps](#groupingpanelemptymessageprops)&gt; | | A component that renders an empty group panel message.
-messages? | [GroupingPanel.LocalizationMessages](#localization-messages) | | An object that specifies the localization messages.
+showSortingControls | boolean | false | Specifies whether to render controls that toggle the column's sorting state. Requires the [SortingState](sorting-state.md) dependency.
+showGroupingControls | boolean | false | Specifies whether column headers display a button that cancels grouping by that column.
+containerComponent | ElementType&lt;[GroupingPanelContainerProps](#groupingpanelcontainerprops)&gt; | | A component that renders a group panel container.
+itemComponent | ElementType&lt;[GroupingPanelItemProps](#groupingpanelitemprops)&gt; | | A component that renders a group panel item.
+emptyMessageComponent | ElementType&lt;[GroupingPanelEmptyMessageProps](#groupingpanelemptymessageprops)&gt; | | A component that renders an empty group panel message.
+messages | object | | An object that specifies the [localization messages](#localization-messages).
 
 ## Interfaces
 
@@ -30,22 +30,26 @@ messages? | [GroupingPanel.LocalizationMessages](#localization-messages) | | An 
 
 Describes grouping panel item properties.
 
+A value with the following shape:
+
 Field | Type | Description
 ------|------|------------
 column | [Column](grid.md#column) | A column associated with the item.
 draft? | string | The item preview mode. Contains the "add", "remove" or "reorder" value.
 
-### GroupingPanel.ContainerProps
+### GroupingPanelContainerProps
 
 Describes properties passed to a component that renders a group panel container.
 
 Field | Type | Description
 ------|------|------------
-children? | ReactNode | A React node to be placed in the root layout.
+children? | ReactElement | A React element to be placed in the root layout.
 
-### GroupingPanel.ItemProps
+### GroupingPanelItemProps
 
 Describes properties passed to a group panel item template when it is being rendered.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
@@ -53,18 +57,22 @@ item | [GroupingPanelItem](#groupingpanelitem) | The Grouping Panel item.
 showGroupingControls | boolean | Specifies whether to display a button that cancels grouping by column.
 showSortingControls | boolean | Specifies whether to render controls that toggle the column's sorting state.
 sortingDirection? | 'asc' &#124; 'desc' | Specifies the sorting direction.
-onSort | (parameters: { direction?: 'asc' &#124; 'desc' &#124; null }) => void | An event that initiates changing the column sorting direction. Cancels sorting by the current column if `direction` is set to null.
+onSort | ({ direction?: 'asc' &#124; 'desc' &#124; null }) => void | An event that initiates changing the column sorting direction. Cancels sorting by the current column if `direction` is set to null.
 onGroup | () => void | An event that initiates grouping by column.
 
-### GroupingPanel.EmptyMessageProps
+### GroupingPanelEmptyMessageProps
 
 Describes properties passed to a component that renders an empty group panel message.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
 getMessage | ([messageKey](#localization-messages): string) => string | Returns the text displayed in the group panel if grid data is not grouped.
 
 ## Localization Messages
+
+An object with the following shape:
 
 Field | Type | Default | Description
 ------|------|---------|------------
@@ -74,9 +82,9 @@ groupByColumn? | string | 'Drag a column header here to group by that column' | 
 
 Name | Properties | Description
 -----|------------|------------
-GroupingPanel.Container | [GroupingPanel.ContainerProps](#groupingpanelcontainerprops) | A component that renders a grouping panel container.
-GroupingPanel.Item | [GroupingPanel.ItemProps](#groupingpanelitemprops) | A component that renders a grouping panel item.
-GroupingPanel.EmptyMessage | [GroupingPanel.EmptyMessageProps](#groupingpanelemptymessageprops) | A component that renders an empty grouping panel message.
+GroupingPanel.Container | [GroupingPanelContainerProps](#groupingpanelcontainerprops) | A component that renders a grouping panel container.
+GroupingPanel.Item | [GroupingPanelItemProps](#groupingpanelitemprops) | A component that renders a grouping panel item.
+GroupingPanel.EmptyMessage | [GroupingPanelEmptyMessageProps](#groupingpanelemptymessageprops) | A component that renders an empty grouping panel message.
 
 If you specify additional properties, they are added to the component's root element.
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { shallow } from 'enzyme';
 import { getTableRowColumnsWithColSpan } from '@devexpress/dx-grid-core';
 import { setupConsole } from '@devexpress/dx-testing';

@@ -1,4 +1,4 @@
-import * as React from 'react';<%&additionalImports%>
+import React from 'react';<%&additionalImports%>
 import {
   Grid,
   Table,

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Draggable } from '@devexpress/dx-react-core';
 import { withStyles } from 'material-ui/styles';
@@ -33,8 +33,22 @@ const styles = theme => ({
   },
   resizeHandleActive: {
     '& $resizeHandleLine': {
-      opacity: '1',
       backgroundColor: theme.palette.primary[300],
+    },
+  },
+  '@media (pointer: fine)': {
+    resizeHandleLine: {
+      opacity: 0,
+    },
+    resizeHandleActive: {
+      '& $resizeHandleLine': {
+        opacity: 1,
+      },
+    },
+    resizeHandle: {
+      '&:hover $resizeHandleLine': {
+        opacity: 1,
+      },
     },
   },
 });
@@ -63,7 +77,7 @@ export class ResizingControlBase extends React.PureComponent {
     };
   }
   render() {
-    const { classes, resizeHandleOpacityClass } = this.props;
+    const { classes } = this.props;
     const { resizing } = this.state;
 
     return (
@@ -80,14 +94,12 @@ export class ResizingControlBase extends React.PureComponent {
         >
           <div
             className={classNames({
-              [resizeHandleOpacityClass]: true,
               [classes.resizeHandleLine]: true,
               [classes.resizeHandleFirstLine]: true,
             })}
           />
           <div
             className={classNames({
-              [resizeHandleOpacityClass]: true,
               [classes.resizeHandleLine]: true,
               [classes.resizeHandleSecondLine]: true,
             })}
@@ -103,7 +115,6 @@ ResizingControlBase.propTypes = {
   onWidthDraft: PropTypes.func.isRequired,
   onWidthDraftCancel: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  resizeHandleOpacityClass: PropTypes.string.isRequired,
 };
 
 export const ResizingControl = withStyles(styles, { name: 'ResizingControl' })(ResizingControlBase);

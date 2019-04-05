@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { TableFilterRow as TableFilterRowBase } from '@devexpress/dx-react-grid';
 import { TableFilterCell } from '../templates/table-filter-cell';
 import { TableRow } from '../templates/table-row';

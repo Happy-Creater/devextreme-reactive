@@ -8,17 +8,19 @@ A plugin that performs built-in grouping and group expanding/collapsing.
 
 - [GroupingState](grouping-state.md)
 
-### Properties
+### <a name="properties"></a>Properties
 
 Name | Type | Default | Description
 -----|------|---------|------------
-columnExtensions? | Array&lt;[IntegratedGrouping.ColumnExtension](#integratedgroupingcolumnextension)&gt; | | Additional column properties that the plugin can handle.
+columnExtensions | Array&lt;[IntegratedGroupingColumnExtension](#integratedgroupingcolumnextension)&gt; | | Additional column properties that the plugin can handle.
 
 ## Interfaces
 
-### IntegratedGrouping.ColumnExtension
+### IntegratedGroupingColumnExtension
 
 Describes additional column properties that the plugin can handle.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------

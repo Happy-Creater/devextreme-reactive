@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Template, TemplatePlaceholder, Plugin, TemplateConnector,
 } from '@devexpress/dx-react-core';
@@ -50,10 +50,7 @@ export class ColumnChooser extends React.PureComponent {
         <Template name="toolbarContent">
           <TemplatePlaceholder />
           <TemplateConnector>
-            {(
-              { columns, hiddenColumnNames, isColumnTogglingEnabled },
-              { toggleColumnVisibility },
-            ) => (
+            {({ columns, hiddenColumnNames }, { toggleColumnVisibility }) => (
               <React.Fragment>
                 <ToggleButton
                   buttonRef={this.buttonRef}
@@ -67,18 +64,13 @@ export class ColumnChooser extends React.PureComponent {
                 >
                   <Container>
                     {columnChooserItems(columns, hiddenColumnNames)
-                      .map((item) => {
-                        const { name: columnName } = item.column;
-                        const togglingEnabled = isColumnTogglingEnabled(columnName);
-                        return (
-                          <Item
-                            key={columnName}
-                            item={item}
-                            disabled={!togglingEnabled}
-                            onToggle={() => toggleColumnVisibility(columnName)}
-                          />
-                      );
-                    })}
+                      .map(item => (
+                        <Item
+                          key={item.column.name}
+                          item={item}
+                          onToggle={() => toggleColumnVisibility(item.column.name)}
+                        />
+                    ))}
                   </Container>
                 </Overlay>
               </React.Fragment>
