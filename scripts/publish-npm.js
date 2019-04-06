@@ -7,14 +7,7 @@ const conventionalRecommendedBump = require('conventional-recommended-bump');
 const CONVENTIONAL_CHANGELOG_PRESET = 'angular';
 const ensureRepoUpToDate = require('./ensure-repo-up-to-date');
 
-const currentBranchName = execSync('git branch', { stdio: 'pipe' })
-  .toString()
-  .trim()
-  .split('\n')
-  .filter(line => line.startsWith('*'))[0]
-  .slice(2);
-
-ensureRepoUpToDate(currentBranchName);
+ensureRepoUpToDate();
 
 console.log();
 console.log('====================');
@@ -97,7 +90,7 @@ new Promise((resolve) => {
       execSync('git add .', { stdio: 'ignore' });
       execSync(`git commit -m "${commitMessage}"`, { stdio: 'ignore' });
       execSync(`git push origin ${branchName}`, { stdio: 'ignore' });
-      execSync(`git checkout ${currentBranchName}`, { stdio: 'ignore' });
+      execSync(`git checkout master`, { stdio: 'ignore' });
 
       console.log();
       console.log('--------------------');

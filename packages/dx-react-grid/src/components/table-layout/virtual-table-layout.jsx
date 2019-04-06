@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { ColumnGroup } from './column-group';
 import { RowLayout } from './row-layout';
 import {
@@ -13,35 +13,37 @@ export class VirtualTableLayout extends React.PureComponent {
     super(props);
 
     this.state = {
-      rowHeights: new Map(),
-      viewportTop: 0,
+      visibleBodyRows: [],
     };
 
     this.rowRefs = new Map();
+    this.rowHeights = new Map();
+    this.viewportTop = 0;
     this.updateViewport = this.updateViewport.bind(this);
     this.registerRowRef = this.registerRowRef.bind(this);
     this.getRowHeight = this.getRowHeight.bind(this);
+
+    this.state.visibleBodyRows = this.getVisibleRows();
   }
   componentDidMount() {
     this.storeRowHeights();
   }
   componentWillReceiveProps(nextProps) {
-    if (
-      this.props.headerRows !== nextProps.headerRows ||
-      this.props.rows !== nextProps.rows
-    ) {
-      const { rowHeights: prevRowHeight } = this.state;
+    if (this.props.headerRows !== nextProps.headerRows ||
+      this.props.rows !== nextProps.rows) {
+      const { rowHeights: prevRowHeight } = this;
+      this.rowHeights = [...nextProps.headerRows, ...nextProps.rows].reduce(
+        (acc, row) => {
+          const rowHeight = prevRowHeight.get(row.key);
+          if (rowHeight !== undefined) {
+            acc.set(row.key, rowHeight);
+          }
+          return acc;
+        },
+        new Map(),
+      );
       this.setState({
-        rowHeights: [...nextProps.headerRows, ...nextProps.rows].reduce(
-          (acc, row) => {
-            const rowHeight = prevRowHeight.get(row.key);
-            if (rowHeight !== undefined) {
-              acc.set(row.key, rowHeight);
-            }
-            return acc;
-          },
-          new Map(),
-        ),
+        visibleBodyRows: this.getVisibleRows(nextProps, this.viewportTop),
       });
     }
   }
@@ -49,12 +51,12 @@ export class VirtualTableLayout extends React.PureComponent {
     this.storeRowHeights();
   }
   getRowHeight(row) {
-    const storedHeight = this.state.rowHeights.get(row.key);
+    const storedHeight = this.rowHeights.get(row.key);
     if (storedHeight !== undefined) return storedHeight;
     if (row.height) return row.height;
     return this.props.estimatedRowHeight;
   }
-  getVisibleRows({ rows, headerRows, height } = this.props, top = this.state.viewportTop) {
+  getVisibleRows({ rows, headerRows, height } = this.props, top = this.viewportTop) {
     const headHeight = headerRows.reduce((acc, row) => acc + this.getRowHeight(row), 0);
     return getVisibleRows(rows, top, height - headHeight, this.getRowHeight);
   }
@@ -65,17 +67,17 @@ export class VirtualTableLayout extends React.PureComponent {
       .filter(([row, height]) => height !== this.getRowHeight(row));
 
     if (rowsWithChangedHeights.length) {
-      const prevVisibleBodyRows = this.getVisibleRows();
-
-      const { rowHeights } = this.state;
+      const { rowHeights } = this;
       rowsWithChangedHeights
         .forEach(([row, height]) => rowHeights.set(row.key, height));
 
+      const { visibleBodyRows: prevVisibleBodyRows } = this.state;
+      const visibleBodyRows = this.getVisibleRows();
+
       this.setState({
-        rowHeights,
+        visibleBodyRows,
       });
 
-      const visibleBodyRows = this.getVisibleRows();
       const scrollOffset = firstVisibleRowOffset(prevVisibleBodyRows, visibleBodyRows);
       if (scrollOffset !== 0) {
         // eslint-disable-next-line react/no-find-dom-node
@@ -102,8 +104,9 @@ export class VirtualTableLayout extends React.PureComponent {
     }
 
     if (this.viewportTop !== node.scrollTop) {
+      this.viewportTop = node.scrollTop;
       this.setState({
-        viewportTop: node.scrollTop,
+        visibleBodyRows: this.getVisibleRows(),
       });
     }
   }
@@ -118,7 +121,9 @@ export class VirtualTableLayout extends React.PureComponent {
       bodyComponent: Body,
       rowComponent, cellComponent,
     } = this.props;
-    const visibleBodyRows = this.getVisibleRows();
+    const {
+      visibleBodyRows,
+    } = this.state;
 
     return (
       <Container

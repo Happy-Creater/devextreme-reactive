@@ -10,19 +10,18 @@ const ENDING_KEY = 'ending';
 export const getVisibleRows = (rows, viewportTop, viewportHeight, getRowHeight) => {
   const result = [];
 
-  const viewportBottom = viewportTop + viewportHeight;
-  let topPosition = 0;
+  const bottom = viewportTop + viewportHeight;
+  let position = 0;
   for (let i = 0; i < rows.length; i += 1) {
     const row = rows[i];
-    const lastIndex = result.length - 1;
-    const last = result[lastIndex];
+    const last = result[result.length - 1];
 
     const height = getRowHeight(row);
-    const bottomPosition = topPosition + height;
+    const nextPosition = position + height;
     if (
-      (topPosition >= viewportTop && topPosition < viewportBottom) ||
-      (bottomPosition > viewportTop && bottomPosition <= viewportBottom) ||
-      (topPosition < viewportTop && bottomPosition > viewportBottom)
+      (viewportTop <= position && position < bottom
+        && viewportTop < nextPosition && nextPosition <= bottom) ||
+      (viewportTop > position && nextPosition > bottom)
     ) {
       if (last && last.type === STUB_TYPE) {
         rows.slice(Math.max(0, i - OVERSCAN), i).forEach((overscanRow) => {
@@ -30,9 +29,6 @@ export const getVisibleRows = (rows, viewportTop, viewportHeight, getRowHeight) 
           last.height -= overscanRowSize;
           result.push({ type: OVERSCAN_TYPE, height: overscanRowSize, row: overscanRow });
         });
-        if (last.height === 0) {
-          result.splice(lastIndex, 1);
-        }
       }
       result.push({ type: VISIBLE_TYPE, height, row });
     } else if (last && last.type === STUB_TYPE) {
@@ -49,7 +45,7 @@ export const getVisibleRows = (rows, viewportTop, viewportHeight, getRowHeight) 
     } else {
       result.push({ type: STUB_TYPE, key: STARTING_KEY, height });
     }
-    topPosition = bottomPosition;
+    position = nextPosition;
   }
 
   return result;
