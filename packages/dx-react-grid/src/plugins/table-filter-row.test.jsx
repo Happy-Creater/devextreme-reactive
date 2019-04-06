@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { setupConsole } from '@devexpress/dx-testing';
 import { PluginHost } from '@devexpress/dx-react-core';
@@ -24,7 +24,6 @@ const defaultDeps = {
   getter: {
     tableHeaderRows: [{ type: 'undefined', rowId: 1 }],
     filters: [{ columnName: 'a', value: 'b' }],
-    isColumnFilteringEnabled: () => true,
   },
   action: {
     changeColumnFilter: jest.fn(),

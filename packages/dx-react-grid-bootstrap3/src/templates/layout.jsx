@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 export const Root = ({ children, className, ...restProps }) => (
@@ -9,7 +9,10 @@ export const Root = ({ children, className, ...restProps }) => (
 );
 
 Root.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
   className: PropTypes.string,
 };
 

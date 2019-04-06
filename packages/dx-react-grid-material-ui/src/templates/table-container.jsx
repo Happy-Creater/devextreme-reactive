@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
@@ -11,10 +10,10 @@ const styles = {
 };
 
 const TableContainerBase = ({
-  children, classes, className, ...restProps
+  children, classes, ...restProps
 }) => (
   <div
-    className={classNames(classes.root, className)}
+    className={classes.root}
     {...restProps}
   >
     {children}
@@ -22,13 +21,11 @@ const TableContainerBase = ({
 );
 
 TableContainerBase.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
   classes: PropTypes.object.isRequired,
-  className: PropTypes.string,
-};
-
-TableContainerBase.defaultProps = {
-  className: undefined,
 };
 
 export const TableContainer = withStyles(styles, { name: 'TableContainer' })(TableContainerBase);
