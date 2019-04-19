@@ -1,15 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export const TableDetailCell = ({
   colSpan,
+  style,
   children,
   className,
   tableColumn, tableRow, row,
   ...restProps
 }) => (
   <td
+    style={style}
     colSpan={colSpan}
     className={classNames('active', className)}
     {...restProps}
@@ -19,8 +21,12 @@ export const TableDetailCell = ({
 );
 
 TableDetailCell.propTypes = {
+  style: PropTypes.object,
   colSpan: PropTypes.number,
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   className: PropTypes.string,
   tableColumn: PropTypes.object,
   tableRow: PropTypes.object,
@@ -28,6 +34,7 @@ TableDetailCell.propTypes = {
 };
 
 TableDetailCell.defaultProps = {
+  style: null,
   colSpan: 1,
   className: undefined,
   tableColumn: undefined,

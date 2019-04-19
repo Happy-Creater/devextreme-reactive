@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 export const CommandButton = ({
@@ -50,7 +50,10 @@ export const EditCommandHeadingCell = ({
 );
 
 EditCommandHeadingCell.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   style: PropTypes.object,
   tableColumn: PropTypes.object,
   tableRow: PropTypes.object,
@@ -58,7 +61,7 @@ EditCommandHeadingCell.propTypes = {
 
 EditCommandHeadingCell.defaultProps = {
   children: undefined,
-  style: null,
+  style: {},
   tableColumn: undefined,
   tableRow: undefined,
 };
@@ -83,7 +86,10 @@ export const EditCommandCell = ({
 );
 
 EditCommandCell.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   style: PropTypes.object,
   tableColumn: PropTypes.object,
   tableRow: PropTypes.object,
@@ -91,7 +97,7 @@ EditCommandCell.propTypes = {
 
 EditCommandCell.defaultProps = {
   children: undefined,
-  style: null,
+  style: {},
   tableColumn: undefined,
   tableRow: undefined,
 };

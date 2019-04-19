@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { UPDATE_CONNECTION } from './getter';
 import {
   isTrackedDependenciesChanged,
@@ -51,7 +51,6 @@ export class TemplateConnector extends React.Component {
     return this.state.children;
   }
 }
-
 TemplateConnector.propTypes = {
   children: PropTypes.func.isRequired,
 };

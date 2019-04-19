@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { TableSelection as TableSelectionBase } from '@devexpress/dx-react-grid';
 import { TableSelectAllCell } from '../templates/table-select-all-cell';

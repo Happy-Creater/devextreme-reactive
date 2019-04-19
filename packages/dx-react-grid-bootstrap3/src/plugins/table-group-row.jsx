@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { TableGroupRow as TableGroupRowBase } from '@devexpress/dx-react-grid';
 import { TableGroupCell } from '../templates/table-group-row-cell';
 import { TableRow } from '../templates/table-row';

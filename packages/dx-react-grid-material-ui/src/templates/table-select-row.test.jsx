@@ -1,65 +1,49 @@
-import * as React from 'react';
+import React from 'react';
 import { TableRow as TableRowMUI } from 'material-ui/Table';
-import { createShallow } from 'material-ui/test-utils';
+import { createMount } from 'material-ui/test-utils';
+import { setupConsole } from '@devexpress/dx-testing';
 import { TableSelectRow } from './table-select-row';
 
-const defaultProps = {
-  selected: false,
-  selectByRowClick: false,
-  onToggle: () => {},
-};
-
 describe('TableSelectRow', () => {
-  let shallow;
+  let resetConsole;
+  let mount;
+  const defaultProps = {
+    selected: false,
+    selectByRowClick: false,
+    onToggle: () => {},
+  };
 
   beforeAll(() => {
-    shallow = createShallow({ });
+    resetConsole = setupConsole({ ignore: ['validateDOMNesting'] });
+    mount = createMount();
+  });
+  afterAll(() => {
+    resetConsole();
+    mount.cleanUp();
   });
 
   it('should have correct selected prop', () => {
-    let tree = shallow((
-      <TableSelectRow
-        {...defaultProps}
-      />
-    ));
+    let tree = mount(<TableSelectRow
+      {...defaultProps}
+    />);
+    expect(tree.find(TableRowMUI).prop('selected')).toBeFalsy();
 
-    expect(tree.find(TableRowMUI).prop('selected'))
-      .toBeFalsy();
-
-    tree = shallow((
-      <TableSelectRow
-        {...defaultProps}
-        selected
-      />
-    ));
-    expect(tree.find(TableRowMUI).prop('selected'))
-      .toBeTruthy();
+    tree = mount(<TableSelectRow
+      {...defaultProps}
+      selected
+    />);
+    expect(tree.find(TableRowMUI).prop('selected')).toBeTruthy();
   });
 
   it('should handle row click', () => {
     const onToggleMock = jest.fn();
-    const tree = shallow((
-      <TableSelectRow
-        {...defaultProps}
-        onToggle={onToggleMock}
-        selectByRowClick
-      />
-    ));
+    const tree = mount(<TableSelectRow
+      {...defaultProps}
+      onToggle={onToggleMock}
+      selectByRowClick
+    />);
 
-    tree.find(TableRowMUI).prop('onClick')({ stopPropagation: () => {} });
-    expect(onToggleMock)
-      .toBeCalled();
-  });
-
-  it('should pass rest props to the root element', () => {
-    const tree = shallow((
-      <TableSelectRow
-        {...defaultProps}
-        data={{ a: 1 }}
-      />
-    ));
-
-    expect(tree.props().data)
-      .toMatchObject({ a: 1 });
+    tree.find(TableRowMUI).simulate('click');
+    expect(onToggleMock).toBeCalled();
   });
 });
