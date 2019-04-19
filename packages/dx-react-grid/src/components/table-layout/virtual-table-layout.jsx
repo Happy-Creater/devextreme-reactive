@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { ColumnGroup } from './column-group';
 import { RowLayout } from './row-layout';
 import {

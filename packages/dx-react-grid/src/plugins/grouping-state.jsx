@@ -1,12 +1,11 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Getter, Action, Plugin } from '@devexpress/dx-react-core';
 import {
   changeColumnGrouping,
   toggleExpandedGroups,
   draftColumnGrouping,
   cancelColumnGroupingDraft,
-  getColumnExtensionValueGetter,
 } from '@devexpress/dx-grid-core';
 import { createStateHelper } from '../utils/state-helper';
 
@@ -27,20 +26,23 @@ const adjustSortIndex = (sortIndex, grouping, sorting) =>
     0,
   );
 
-const columnExtensionValueGetter = (columnExtensions, defaultValue) =>
-  getColumnExtensionValueGetter(columnExtensions, 'groupingEnabled', defaultValue);
-
 export class GroupingState extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      grouping: props.defaultGrouping,
+      grouping: props.grouping || props.defaultGrouping,
       draftGrouping: null,
-      expandedGroups: props.defaultExpandedGroups,
+      expandedGroups: props.expandedGroups || props.defaultExpandedGroups,
     };
 
-    this.stateHelper = createStateHelper(this);
+    this.stateHelper = createStateHelper(
+      this,
+      {
+        grouping: () => this.props.onGroupingChange,
+        expandedGroups: () => this.props.onExpandedGroupsChange,
+      },
+    );
 
     this.changeColumnGrouping = this.changeColumnGrouping.bind(this);
     this.toggleGroupExpanded = this.stateHelper.applyReducer
@@ -51,23 +53,22 @@ export class GroupingState extends React.PureComponent {
       .bind(this.stateHelper, cancelColumnGroupingDraft);
     this.changeColumnSorting = this.changeColumnSorting.bind(this);
   }
-  getState() {
+  componentWillReceiveProps(nextProps) {
     const {
-      grouping = this.state.grouping,
-      expandedGroups = this.state.expandedGroups,
-    } = this.props;
-    return {
-      ...this.state,
       grouping,
       expandedGroups,
-    };
+    } = nextProps;
+    this.setState({
+      ...grouping !== undefined ? { grouping } : null,
+      ...expandedGroups !== undefined ? { expandedGroups } : null,
+    });
   }
   changeColumnSorting(
     { columnName, keepOther, ...restParams },
     { sorting },
     { changeColumnSorting },
   ) {
-    const { grouping } = this.getState();
+    const { grouping } = this.state;
     const groupingIndex = grouping
       .findIndex(columnGrouping => columnGrouping.columnName === columnName);
     if (groupingIndex === -1) {
@@ -126,22 +127,8 @@ export class GroupingState extends React.PureComponent {
       },
     );
   }
-  notifyStateChange(nextState, state) {
-    const { grouping } = nextState;
-    const { onGroupingChange } = this.props;
-    if (onGroupingChange && grouping !== state.grouping) {
-      onGroupingChange(grouping);
-    }
-
-    const { expandedGroups } = nextState;
-    const { onExpandedGroupsChange } = this.props;
-    if (onExpandedGroupsChange && expandedGroups !== state.expandedGroups) {
-      onExpandedGroupsChange(expandedGroups);
-    }
-  }
   render() {
-    const { grouping, draftGrouping, expandedGroups } = this.getState();
-    const { columnExtensions, columnGroupingEnabled } = this.props;
+    const { grouping, draftGrouping, expandedGroups } = this.state;
 
     return (
       <Plugin
@@ -150,10 +137,6 @@ export class GroupingState extends React.PureComponent {
       >
         <Getter name="grouping" value={grouping} />
         <Getter name="draftGrouping" value={draftGrouping || grouping} />
-        <Getter
-          name="isColumnGroupingEnabled"
-          value={columnExtensionValueGetter(columnExtensions, columnGroupingEnabled)}
-        />
         <Action name="changeColumnGrouping" action={this.changeColumnGrouping} />
         <Action name="draftColumnGrouping" action={this.draftColumnGrouping} />
         <Action name="cancelColumnGroupingDraft" action={this.cancelColumnGroupingDraft} />
@@ -174,8 +157,6 @@ GroupingState.propTypes = {
   expandedGroups: PropTypes.array,
   defaultExpandedGroups: PropTypes.array,
   onExpandedGroupsChange: PropTypes.func,
-  columnExtensions: PropTypes.array,
-  columnGroupingEnabled: PropTypes.bool,
 };
 
 GroupingState.defaultProps = {
@@ -185,6 +166,4 @@ GroupingState.defaultProps = {
   expandedGroups: undefined,
   defaultExpandedGroups: [],
   onExpandedGroupsChange: undefined,
-  columnExtensions: undefined,
-  columnGroupingEnabled: true,
 };

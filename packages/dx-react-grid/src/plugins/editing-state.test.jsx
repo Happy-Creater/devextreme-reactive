@@ -1,15 +1,30 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { setupConsole } from '@devexpress/dx-testing';
 import { PluginHost } from '@devexpress/dx-react-core';
-import { createRowChangeGetter, getColumnExtensionValueGetter } from '@devexpress/dx-grid-core';
-import { pluginDepsToComponents, getComputedState, executeComputedAction } from './test-utils';
+import {
+  createRowChangeGetter,
+  startEditRows, stopEditRows,
+  deleteRows, cancelDeletedRows,
+  changeRow, cancelChanges,
+  addRow, changeAddedRow, cancelAddedRows,
+} from '@devexpress/dx-grid-core';
+import { pluginDepsToComponents, getComputedState } from './test-utils';
 import { EditingState } from './editing-state';
+import { testStatePluginField } from '../utils/state-helper.test-utils';
 
 jest.mock('@devexpress/dx-grid-core', () => ({
   ...require.requireActual('@devexpress/dx-grid-core'),
+  startEditRows: jest.fn(),
+  stopEditRows: jest.fn(),
+  deleteRows: jest.fn(),
+  cancelDeletedRows: jest.fn(),
   createRowChangeGetter: jest.fn(),
-  getColumnExtensionValueGetter: jest.fn(),
+  changeRow: jest.fn(),
+  cancelChanges: jest.fn(),
+  addRow: jest.fn(),
+  changeAddedRow: jest.fn(),
+  cancelAddedRows: jest.fn(),
 }));
 
 const defaultDeps = {};
@@ -28,7 +43,6 @@ describe('EditingState', () => {
 
   beforeEach(() => {
     createRowChangeGetter.mockImplementation(() => ({ a: 1 }));
-    getColumnExtensionValueGetter.mockImplementation(() => ((() => {})));
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -55,100 +69,82 @@ describe('EditingState', () => {
       .toEqual(createRowChangeGetter());
   });
 
-  describe('action sequence in batch', () => {
-    it('should correctly work with the several action calls in the uncontrolled mode', () => {
-      const addedRowsChange = jest.fn();
-      const tree = mount((
-        <PluginHost>
-          {pluginDepsToComponents(defaultDeps)}
-          <EditingState
-            {...defaultProps}
-            defaultAddedRows={[]}
-            onAddedRowsChange={addedRowsChange}
-          />
-        </PluginHost>
-      ));
-
-      executeComputedAction(tree, (actions) => {
-        actions.addRow();
-        actions.addRow();
-      });
-
-      expect(addedRowsChange)
-        .toBeCalledWith([{}, {}]);
-
-      expect(addedRowsChange)
-        .toHaveBeenCalledTimes(1);
-    });
-
-    it('should correctly work with the several action calls in the controlled mode', () => {
-      const addedRowsChange = jest.fn();
-      const tree = mount((
-        <PluginHost>
-          {pluginDepsToComponents(defaultDeps)}
-          <EditingState
-            {...defaultProps}
-            addedRows={[]}
-            onAddedRowsChange={addedRowsChange}
-          />
-        </PluginHost>
-      ));
-
-      executeComputedAction(tree, (actions) => {
-        actions.addRow();
-        actions.addRow();
-      });
-
-      expect(addedRowsChange)
-        .toBeCalledWith([{}, {}]);
-
-      expect(addedRowsChange)
-        .toHaveBeenCalledTimes(1);
-    });
-
-    it('should correctly work with the several editing action calls in the controlled mode', () => {
-      const changeEditingRowIds = jest.fn();
-      const tree = mount((
-        <PluginHost>
-          {pluginDepsToComponents(defaultDeps)}
-          <EditingState
-            {...defaultProps}
-            editingRowIds={[]}
-            rowChanges={{}}
-            onEditingRowIdsChange={changeEditingRowIds}
-          />
-        </PluginHost>
-      ));
-
-      executeComputedAction(tree, (actions) => {
-        actions.startEditRows({ rowIds: [0] });
-        actions.stopEditRows({ rowIds: [0] });
-        actions.changeRow({ rowIds: [0] });
-      });
-
-      expect(changeEditingRowIds)
-        .toBeCalledWith([]);
-
-      expect(changeEditingRowIds)
-        .toHaveBeenCalledTimes(1);
-    });
+  testStatePluginField({
+    Plugin: EditingState,
+    propertyName: 'editingRowIds',
+    defaultDeps,
+    defaultProps,
+    values: [
+      [0],
+      [1],
+      [2],
+    ],
+    actions: [{
+      actionName: 'startEditRows',
+      reducer: startEditRows,
+    }, {
+      actionName: 'stopEditRows',
+      reducer: stopEditRows,
+    }],
   });
 
-  describe('column extensions', () => {
-    it('should correctly call getColumnExtensionValueGetter', () => {
-      const columnExtensions = [{ columnName: 'a', editingEnabled: true }];
-      mount((
-        <PluginHost>
-          {pluginDepsToComponents(defaultDeps)}
-          <EditingState
-            {...defaultProps}
-            columnEditingEnabled={false}
-            columnExtensions={columnExtensions}
-          />
-        </PluginHost>
-      ));
-      expect(getColumnExtensionValueGetter)
-        .toBeCalledWith(columnExtensions, 'editingEnabled', false);
-    });
+  testStatePluginField({
+    Plugin: EditingState,
+    propertyName: 'deletedRowIds',
+    defaultDeps,
+    defaultProps,
+    values: [
+      [0],
+      [1],
+      [2],
+    ],
+    actions: [{
+      actionName: 'deleteRows',
+      reducer: deleteRows,
+    }, {
+      actionName: 'cancelDeletedRows',
+      reducer: cancelDeletedRows,
+    }],
+  });
+
+  testStatePluginField({
+    Plugin: EditingState,
+    propertyName: 'rowChanges',
+    defaultDeps,
+    defaultProps,
+    values: [
+      { 1: { a: 0 } },
+      { 1: { a: 1 } },
+      { 1: { a: 2 } },
+    ],
+    actions: [{
+      actionName: 'changeRow',
+      reducer: changeRow,
+    }, {
+      actionName: 'cancelChangedRows',
+      reducer: cancelChanges,
+    }],
+  });
+
+  testStatePluginField({
+    Plugin: EditingState,
+    propertyName: 'addedRows',
+    defaultDeps,
+    defaultProps,
+    values: [
+      [{ a: 0 }],
+      [{ a: 1 }],
+      [{ a: 2 }],
+    ],
+    actions: [{
+      actionName: 'addRow',
+      reducer: addRow,
+    }, {
+      actionName: 'changeAddedRow',
+      reducer: changeAddedRow,
+    }, {
+      actionName: 'cancelAddedRows',
+      reducer: cancelAddedRows,
+    }],
   });
 });

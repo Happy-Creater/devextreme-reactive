@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Getter, Action, Plugin } from '@devexpress/dx-react-core';
 import { toggleSelection } from '@devexpress/dx-grid-core';
 import { createStateHelper } from '../utils/state-helper';
@@ -9,32 +9,29 @@ export class SelectionState extends React.PureComponent {
     super(props);
 
     this.state = {
-      selection: props.defaultSelection,
+      selection: props.selection || props.defaultSelection,
     };
 
-    const stateHelper = createStateHelper(this);
+    const stateHelper = createStateHelper(
+      this,
+      {
+        selection: () => this.props.onSelectionChange,
+      },
+    );
 
     this.toggleSelection = stateHelper.applyFieldReducer
       .bind(stateHelper, 'selection', toggleSelection);
   }
-  getState() {
+  componentWillReceiveProps(nextProps) {
     const {
-      selection = this.state.selection,
-    } = this.props;
-    return {
-      ...this.state,
       selection,
-    };
-  }
-  notifyStateChange(nextState, state) {
-    const { selection } = nextState;
-    const { onSelectionChange } = this.props;
-    if (onSelectionChange && selection !== state.selection) {
-      onSelectionChange(selection);
-    }
+    } = nextProps;
+    this.setState({
+      ...selection !== undefined ? { selection } : null,
+    });
   }
   render() {
-    const { selection } = this.getState();
+    const { selection } = this.state;
 
     return (
       <Plugin

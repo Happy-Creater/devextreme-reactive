@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Getter, Plugin } from '@devexpress/dx-react-core';
 import { paginatedRows, rowsWithPageHeaders, pageCount, rowCount } from '@devexpress/dx-grid-core';
 
@@ -16,8 +16,8 @@ const paginatedRowsComputed = ({ rows, pageSize, currentPage }) =>
 const currentPageComputed = ({ currentPage, totalCount, pageSize }, { setCurrentPage }) => {
   const totalPages = pageCount(totalCount, pageSize);
   const adjustedCurrentPage = clamp(currentPage, totalPages - 1);
-  if (totalPages - 1 < currentPage) {
-    setCurrentPage(adjustedCurrentPage);
+  if (currentPage !== adjustedCurrentPage) {
+    setTimeout(() => setCurrentPage(adjustedCurrentPage));
   }
   return adjustedCurrentPage;
 };

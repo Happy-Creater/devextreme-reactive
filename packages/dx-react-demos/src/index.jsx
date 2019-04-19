@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
-import * as React from 'react';
-import { render } from 'react-dom';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import {
   HashRouter,
   MemoryRouter,
@@ -49,16 +49,14 @@ App.propTypes = {
   scriptPath: PropTypes.string,
   showThemeSelector: PropTypes.bool,
   showThemeVariants: PropTypes.bool,
-  defaultTab: PropTypes.string,
 };
 
 App.defaultProps = {
   router: 'memory',
   path: undefined,
   scriptPath: '/dist/index.js',
-  showThemeSelector: false,
+  showThemeSelector: true,
   showThemeVariants: false,
-  defaultTab: 'preview',
 };
 
 const embeddedDemoPlaceholders = document.getElementsByClassName('embedded-demo');
@@ -69,7 +67,7 @@ const embeddedDemoConfigs = [...embeddedDemoPlaceholders]
   }));
 embeddedDemoConfigs
   .forEach((config) => {
-    render(
+    ReactDOM.render(
       <App {...config.options} />,
       config.placeholder,
     );

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { setupConsole } from '@devexpress/dx-testing';
 import {
@@ -21,8 +21,6 @@ const defaultDeps = {
     columns: [],
     draftGrouping: [],
     sorting: [],
-    isColumnSortingEnabled: () => true,
-    isColumnGroupingEnabled: () => true,
   },
   action: {
     changeColumnGrouping: jest.fn(),
