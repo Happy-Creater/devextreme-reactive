@@ -1,4 +1,6 @@
-import { changeColumnOrder } from './reducers';
+import {
+  changeColumnOrder,
+} from './reducers';
 
 describe('TableColumnReordering reducers', () => {
   describe('#changeColumnOrder', () => {

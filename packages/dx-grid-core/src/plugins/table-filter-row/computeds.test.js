@@ -1,5 +1,7 @@
 import { TABLE_FILTER_TYPE } from './constants';
-import { tableHeaderRowsWithFilter } from './computeds';
+import {
+  tableHeaderRowsWithFilter,
+} from './computeds';
 
 describe('TableFilterRow Plugin computeds', () => {
   describe('#tableHeaderRowsWithFilter', () => {

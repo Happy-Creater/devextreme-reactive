@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export const TableCell = ({
   style, column, value, children,
@@ -25,7 +25,10 @@ TableCell.propTypes = {
   value: PropTypes.any,
   column: PropTypes.object,
   row: PropTypes.object,
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
   tableRow: PropTypes.object,
   tableColumn: PropTypes.object,
 };

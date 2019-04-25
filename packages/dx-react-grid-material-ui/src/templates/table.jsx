@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TableMUI from 'material-ui/Table';
 import { withStyles } from 'material-ui/styles';
@@ -21,14 +21,13 @@ const styles = theme => ({
 });
 
 const TableBase = ({
-  children, classes, className, use,
-  ...restProps
+  children, classes, use, ...restProps
 }) => (
   <TableMUI
     className={classNames({
       [classes.table]: true,
       [classes.headTable]: use === 'head',
-    }, className)}
+    })}
     {...restProps}
   >
     {children}
@@ -37,14 +36,15 @@ const TableBase = ({
 
 TableBase.propTypes = {
   use: PropTypes.oneOf(['head']),
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
   classes: PropTypes.object.isRequired,
-  className: PropTypes.string,
 };
 
 TableBase.defaultProps = {
   use: undefined,
-  className: undefined,
 };
 
 export const Table = withStyles(styles, { name: 'Table' })(TableBase);

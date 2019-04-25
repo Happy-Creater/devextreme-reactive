@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { columnChooserItems, getMessagesFormatter } from '@devexpress/dx-grid-core';
 import { PluginHost } from '@devexpress/dx-react-core';
@@ -18,7 +18,6 @@ const defaultDeps = {
       { name: 'c' },
     ],
     hiddenColumnNames: ['a'],
-    isColumnTogglingEnabled: () => true,
   },
   action: {
     toggleVisibility: () => { },
@@ -81,32 +80,6 @@ describe('ColumnChooser', () => {
 
     expect(tree.find(ItemComponent).props())
       .toEqual({
-        disabled: false,
-        item: {
-          column: { name: 'a' },
-          hidden: true,
-        },
-        onToggle: expect.any(Function),
-      });
-  });
-
-  it('should pass correct parameters to the ItemComponent if toggling is not allowed', () => {
-    const tree = mount((
-      <PluginHost>
-        {pluginDepsToComponents(defaultDeps, {
-          getter: {
-            isColumnTogglingEnabled: () => false,
-          },
-        })}
-        <ColumnChooser
-          {...defaultProps}
-        />
-      </PluginHost>
-    ));
-
-    expect(tree.find(ItemComponent).props())
-      .toMatchObject({
-        disabled: true,
         item: {
           column: { name: 'a' },
           hidden: true,

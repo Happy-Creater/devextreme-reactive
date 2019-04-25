@@ -8,7 +8,7 @@
 **/node_modules
 /packages/*/*.tgz
 
-# Testing
+# Tesing
 **/coverage
 
 # Site

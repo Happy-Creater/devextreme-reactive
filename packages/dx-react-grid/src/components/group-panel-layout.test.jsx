@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { findDOMNode } from 'react-dom';
 import { setupConsole } from '@devexpress/dx-testing';
@@ -17,7 +17,6 @@ const defaultProps = {
   containerComponent: ({ children }) => children,
   itemComponent: () => null,
   emptyMessageComponent: () => null,
-  isColumnGroupingEnabled: () => true,
 };
 
 describe('GroupPanelLayout', () => {

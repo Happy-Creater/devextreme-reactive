@@ -1,4 +1,6 @@
-import { groupingPanelItems } from './helpers';
+import {
+  groupingPanelItems,
+} from './helpers';
 
 describe('Plugin helpers', () => {
   describe('#groupingPanelItems', () => {

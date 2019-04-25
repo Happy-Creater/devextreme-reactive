@@ -13,14 +13,16 @@ none
 Name | Type | Default | Description
 -----|------|---------|------------
 for | Array&lt;string&gt; | | The names of columns associated with the specified formatter and editor.
-formatterComponent? | ComponentType&lt;[DataTypeProvider.ValueFormatterProps](#datatypeprovidervalueformatterprops)&gt; | | A component that renders the formatted value.
-editorComponent? | ComponentType&lt;[DataTypeProvider.ValueEditorProps](#datatypeprovidervalueeditorprops)&gt; | | A component that renders a custom editor.
+formatterComponent | ElementType&lt;[ValueFormatterProps](#valueformatterprops)&gt; | | A component that renders the formatted value.
+editorComponent | ElementType&lt;[ValueEditorProps](#valueeditorprops)&gt; | | A component that renders a custom editor.
 
 ## Interfaces
 
-### DataTypeProvider.ValueFormatterProps
+### ValueFormatterProps
 
 Describes properties passed to a component that renders the formatted value.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
@@ -28,9 +30,11 @@ column | [Column](grid.md#column) | A column object.
 row? | any | A row.
 value | any | The value to be formatted.
 
-### DataTypeProvider.ValueEditorProps
+### ValueEditorProps
 
 Describes properties passed to a component that renders the value editor.
+
+A value with the following shape:
 
 Field | Type | Description
 ------|------|------------
@@ -49,5 +53,5 @@ none
 
 Name | Plugin | Type | Description
 -----|--------|------|------------
-valueFormatter | [Template](../../../dx-react-core/docs/reference/template.md) | [DataTypeProvider.ValueFormatterProps](#datatypeprovidervalueformatterprops) | A template that renders the formatted value.
-valueEditor | [Template](../../../dx-react-core/docs/reference/template.md) | [DataTypeProvider.ValueEditorProps](#datatypeprovidervalueeditorprops) | A template that renders the editor.
+valueFormatter | Template | [ValueFormatterProps](#valueformatterprops) | A template that renders the formatted value.
+valueEditor | Template | [ValueEditorProps](#valueeditorprops) | A template that renders the editor.

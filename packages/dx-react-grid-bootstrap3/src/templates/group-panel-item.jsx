@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SortingIndicator } from './parts/sorting-indicator';
 
@@ -10,16 +10,15 @@ const isActionKey = keyCode => keyCode === ENTER_KEY_CODE || keyCode === SPACE_K
 
 export const GroupPanelItem = ({
   item: { column, draft },
-  onGroup, showGroupingControls, groupingEnabled,
-  showSortingControls, sortingDirection, onSort, sortingEnabled,
-  className, style,
+  onGroup, showGroupingControls,
+  showSortingControls, sortingDirection, onSort, className,
   ...restProps
 }) => {
   const handleSortingChange = (e) => {
     const isActionKeyDown = isActionKey(e.keyCode);
     const isMouseClick = e.keyCode === undefined;
 
-    if ((!showSortingControls || !sortingEnabled) || !(isActionKeyDown || isMouseClick)) return;
+    if (!showSortingControls || !(isActionKeyDown || isMouseClick)) return;
 
     const cancelSortingRelatedKey = e.metaKey || e.ctrlKey;
     const direction = (isMouseClick || isActionKeyDown) && cancelSortingRelatedKey
@@ -33,18 +32,12 @@ export const GroupPanelItem = ({
     });
   };
   const handleUngroup = (e) => {
-    if (!groupingEnabled) return;
     const isActionKeyDown = isActionKey(e.keyCode);
     const isMouseClick = e.keyCode === undefined;
 
     if (!isActionKeyDown && !isMouseClick) return;
     onGroup();
   };
-  const getButtonClasses = isDisabled => (classNames({
-    btn: true,
-    'btn-default': true,
-    disabled: isDisabled,
-  }));
   return (
     <div
       className={classNames('btn-group', className)}
@@ -52,15 +45,14 @@ export const GroupPanelItem = ({
         marginRight: '5px',
         marginBottom: '5px',
         ...draft ? { opacity: 0.3 } : null,
-        ...style,
       }}
       {...restProps}
     >
       <span
-        className={getButtonClasses(!sortingEnabled && showSortingControls)}
+        className="btn btn-default"
         onClick={handleSortingChange}
         onKeyDown={handleSortingChange}
-        {...sortingEnabled ? { tabIndex: 0 } : null}
+        {...showSortingControls ? { tabIndex: 0 } : null}
       >
         {column.title || column.name}
         {showSortingControls && sortingDirection && (
@@ -75,7 +67,7 @@ export const GroupPanelItem = ({
 
       {showGroupingControls && (
         <span
-          className={getButtonClasses(!groupingEnabled)}
+          className="btn btn-default"
           onClick={handleUngroup}
         >
           &nbsp;
@@ -104,10 +96,7 @@ GroupPanelItem.propTypes = {
   className: PropTypes.string,
   onSort: PropTypes.func,
   onGroup: PropTypes.func,
-  groupingEnabled: PropTypes.bool,
   showGroupingControls: PropTypes.bool,
-  sortingEnabled: PropTypes.bool,
-  style: PropTypes.object,
 };
 
 GroupPanelItem.defaultProps = {
@@ -117,7 +106,4 @@ GroupPanelItem.defaultProps = {
   onSort: undefined,
   onGroup: undefined,
   showGroupingControls: false,
-  sortingEnabled: false,
-  groupingEnabled: false,
-  style: null,
 };

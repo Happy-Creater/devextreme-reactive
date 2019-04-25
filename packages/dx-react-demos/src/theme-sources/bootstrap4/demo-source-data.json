@@ -1,4 +1,0 @@
-{
-  "additionalImports": "\nimport { Card } from 'reactstrap';",
-  "wrapperTag": "Card"
-}

@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Popover from 'material-ui/Popover';
 
 export const Overlay = ({
-  visible, onHide, toggle,
+  visible, onHide,
   children, target,
   ...restProps
 }) => (
@@ -24,11 +24,9 @@ Overlay.propTypes = {
   children: PropTypes.node.isRequired,
   visible: PropTypes.bool,
   target: PropTypes.object,
-  toggle: PropTypes.func,
 };
 
 Overlay.defaultProps = {
   visible: false,
   target: null,
-  toggle: undefined,
 };

@@ -1,11 +1,10 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Getter,
   Plugin,
   Template,
   TemplatePlaceholder,
-  TemplateConnector,
 } from '@devexpress/dx-react-core';
 import {
   TABLE_DATA_TYPE,
@@ -64,21 +63,10 @@ export class TableColumnReordering extends React.PureComponent {
   resetCellDimensions() {
     this.cellDimensions = [];
   }
-  ensureCellDimensionGetters(tableColumns) {
-    Object.keys(this.cellDimensionGetters)
-      .forEach((columnName) => {
-        const columnIndex = tableColumns
-          .findIndex(({ type, column }) => type === TABLE_DATA_TYPE && column.name === columnName);
-        if (columnIndex === -1) {
-          delete this.cellDimensionGetters[columnName];
-        }
-      });
-  }
-  storeCellDimensionsGetter(tableColumn, getter, tableColumns) {
+  storeCellDimensionsGetter(tableColumn, data) {
     if (tableColumn.type === TABLE_DATA_TYPE) {
-      this.cellDimensionGetters[tableColumn.column.name] = getter;
+      this.cellDimensionGetters[tableColumn.column.name] = data;
     }
-    this.ensureCellDimensionGetters(tableColumns);
   }
   handleOver({ payload, clientOffset: { x } }) {
     const sourceColumnName = payload[0].columnName;
@@ -193,15 +181,11 @@ export class TableColumnReordering extends React.PureComponent {
           predicate={({ tableRow }) => tableRow.type === TABLE_REORDERING_TYPE}
         >
           {params => (
-            <TemplateConnector>
-              {({ tableColumns }) => (
-                <Cell
-                  {...params}
-                  getCellDimensions={getter =>
-                    this.storeCellDimensionsGetter(params.tableColumn, getter, tableColumns)}
-                />
-              )}
-            </TemplateConnector>
+            <Cell
+              {...params}
+              getCellDimensions={fn =>
+                this.storeCellDimensionsGetter(params.tableColumn, fn)}
+            />
           )}
         </Template>
       </Plugin>
