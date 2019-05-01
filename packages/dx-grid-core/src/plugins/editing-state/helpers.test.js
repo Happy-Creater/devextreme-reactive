@@ -1,4 +1,6 @@
-import { getRowChange } from './helpers';
+import {
+  getRowChange,
+} from './helpers';
 
 describe('EditingState helpers', () => {
   describe('#getRowChange', () => {

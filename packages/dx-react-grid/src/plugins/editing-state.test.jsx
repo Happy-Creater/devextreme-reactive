@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { setupConsole } from '@devexpress/dx-testing';
 import { PluginHost } from '@devexpress/dx-react-core';
 import {
   createRowChangeGetter,
-  getColumnExtensionValueGetter,
   startEditRows, stopEditRows,
   deleteRows, cancelDeletedRows,
   changeRow, cancelChanges,
@@ -21,7 +20,6 @@ jest.mock('@devexpress/dx-grid-core', () => ({
   deleteRows: jest.fn(),
   cancelDeletedRows: jest.fn(),
   createRowChangeGetter: jest.fn(),
-  getColumnExtensionValueGetter: jest.fn(),
   changeRow: jest.fn(),
   cancelChanges: jest.fn(),
   addRow: jest.fn(),
@@ -45,7 +43,6 @@ describe('EditingState', () => {
 
   beforeEach(() => {
     createRowChangeGetter.mockImplementation(() => ({ a: 1 }));
-    getColumnExtensionValueGetter.mockImplementation(() => ((() => {})));
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -149,23 +146,5 @@ describe('EditingState', () => {
       actionName: 'cancelAddedRows',
       reducer: cancelAddedRows,
     }],
-  });
-
-  describe('column extensions', () => {
-    it('should correctly call getColumnExtensionValueGetter', () => {
-      const columnExtensions = [{ columnName: 'a', editingEnabled: true }];
-      mount((
-        <PluginHost>
-          {pluginDepsToComponents(defaultDeps)}
-          <EditingState
-            {...defaultProps}
-            columnEditingEnabled={false}
-            columnExtensions={columnExtensions}
-          />
-        </PluginHost>
-      ));
-      expect(getColumnExtensionValueGetter)
-        .toBeCalledWith(columnExtensions, 'editingEnabled', false);
-    });
   });
 });

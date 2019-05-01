@@ -1,4 +1,6 @@
-import { toggleSelection } from './reducers';
+import {
+  toggleSelection,
+} from './reducers';
 
 describe('SelectionState reducers', () => {
   describe('#toggleSelection', () => {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { PluginHost, TemplatePlaceholder } from '@devexpress/dx-react-core';
 import { Toolbar } from './toolbar';

@@ -1,13 +1,12 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export const GroupingControl = ({ align, disabled, onGroup }) => {
+export const GroupingControl = ({ align, onGroup }) => {
   const invertedAlign = align === 'left' ? 'right' : 'left';
 
   return (
     <div
       onClick={(e) => {
-        if (disabled) return;
         e.stopPropagation();
         onGroup();
       }}
@@ -24,7 +23,7 @@ export const GroupingControl = ({ align, disabled, onGroup }) => {
           fontSize: '9px',
           margin: '-5px',
           padding: '5px',
-          ...(!disabled ? { cursor: 'pointer' } : { opacity: 0.3 }),
+          cursor: 'pointer',
         }}
       />
     </div>
@@ -34,9 +33,4 @@ export const GroupingControl = ({ align, disabled, onGroup }) => {
 GroupingControl.propTypes = {
   align: PropTypes.string.isRequired,
   onGroup: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-};
-
-GroupingControl.defaultProps = {
-  disabled: false,
 };

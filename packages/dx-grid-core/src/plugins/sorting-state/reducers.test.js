@@ -1,4 +1,6 @@
-import { changeColumnSorting } from './reducers';
+import {
+  changeColumnSorting,
+} from './reducers';
 
 describe('SortingState reducers', () => {
   describe('#changeColumnSorting', () => {

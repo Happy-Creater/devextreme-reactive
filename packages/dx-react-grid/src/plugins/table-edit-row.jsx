@@ -1,6 +1,8 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Getter, Template, TemplatePlaceholder, TemplateConnector, Plugin } from '@devexpress/dx-react-core';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {
+  Getter, Template, TemplatePlaceholder, TemplateConnector, Plugin,
+} from '@devexpress/dx-react-core';
 import {
   getRowChange,
   tableRowsWithEditing,
@@ -38,18 +40,9 @@ export class TableEditRow extends React.PureComponent {
         >
           {params => (
             <TemplateConnector>
-              {({
-                getCellValue,
-                createRowChange,
-                rowChanges,
-                isColumnEditingEnabled,
-              }, {
-                changeAddedRow,
-                changeRow,
-              }) => {
+              {({ getCellValue, createRowChange, rowChanges }, { changeAddedRow, changeRow }) => {
                 const { rowId, row } = params.tableRow;
-                const { column } = params.tableColumn;
-                const { name: columnName } = column;
+                const { name: columnName } = params.tableColumn.column;
 
                 const isNew = isAddedTableRow(params.tableRow);
                 const changedRow = isNew
@@ -72,7 +65,7 @@ export class TableEditRow extends React.PureComponent {
                   <TemplatePlaceholder
                     name="valueEditor"
                     params={{
-                      column,
+                      column: params.tableColumn.column,
                       row,
                       value,
                       onValueChange,
@@ -82,9 +75,8 @@ export class TableEditRow extends React.PureComponent {
                       <EditCell
                         {...params}
                         row={row}
-                        column={column}
+                        column={params.tableColumn.column}
                         value={value}
-                        editingEnabled={isColumnEditingEnabled(columnName)}
                         onValueChange={onValueChange}
                       >
                         {content}

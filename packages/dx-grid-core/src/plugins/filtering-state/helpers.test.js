@@ -1,4 +1,6 @@
-import { getColumnFilterConfig } from './helpers';
+import {
+  getColumnFilterConfig,
+} from './helpers';
 
 describe('FilteringPlugin helpers', () => {
   describe('#getColumnFilterConfig', () => {

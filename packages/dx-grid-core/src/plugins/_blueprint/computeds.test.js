@@ -1,4 +1,6 @@
-import { pureComputed } from './computeds';
+import {
+  pureComputed,
+} from './computeds';
 
 describe('Plugin computeds', () => {
   describe('#pureComputed', () => {

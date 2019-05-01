@@ -5,10 +5,15 @@ const { prompt } = require('inquirer');
 const { valid, lt, inc, prerelease } = require('semver');
 const conventionalRecommendedBump = require('conventional-recommended-bump');
 const CONVENTIONAL_CHANGELOG_PRESET = 'angular';
-const getCurrentBranchName = require('./get-current-branch-name');
 const ensureRepoUpToDate = require('./ensure-repo-up-to-date');
 
-const currentBranchName = getCurrentBranchName();
+const currentBranchName = execSync('git branch', { stdio: 'pipe' })
+  .toString()
+  .trim()
+  .split('\n')
+  .filter(line => line.startsWith('*'))[0]
+  .slice(2);
+
 ensureRepoUpToDate(currentBranchName);
 
 console.log();
@@ -61,7 +66,7 @@ new Promise((resolve) => {
         .replace('name=""', `name="${version}"`)
         .replace('[](', `[${version}](`)
         .replace('...v)', `...v${version})`)
-    );
+      );
 
     prompt({
       message: 'Ready to publish. Please check build result and CHANGELOG.md. Is it ok?',
@@ -75,47 +80,33 @@ new Promise((resolve) => {
         return;
       }
 
-      const suggestedNpmTag = prerelease(version) !== null ? 'next' : 'latest';
-      prompt({
-        name: 'npmTag',
-        message: `Enter npm relase tag:`,
-        default: suggestedNpmTag,
-        validate: (input) => {
-          if(!/^[\w\.\-]*$/.exec(input))
-            return 'Tag is invalid';
+      console.log('Login into npm...');
+      try { execSync('npm logout', { stdio: 'ignore' }); } catch (e) {}
+      execSync('npm login', { stdio: 'inherit' });
 
-          return true;
-        }
-      })
-      .then(({ npmTag }) => {
-        console.log('Login into npm...');
-        try { execSync('npm logout', { stdio: 'ignore' }); } catch (e) {}
-        execSync('npm login', { stdio: 'inherit' });
+      console.log('Publishing npm...');
+      execSync(`"./node_modules/.bin/lerna" publish ${commonPublishArgs}`, { stdio: 'ignore' });
 
-        console.log('Publishing npm...');
-        execSync(`"./node_modules/.bin/lerna" publish ${commonPublishArgs} --npm-tag ${npmTag}`, { stdio: 'ignore' });
+      console.log('Logout from npm...');
+      execSync('npm logout', { stdio: 'ignore' });
 
-        console.log('Logout from npm...');
-        execSync('npm logout', { stdio: 'ignore' });
+      console.log('Preparing pull request...');
+      const commitMessage = `chore: publish ${version}`;
+      const branchName = `v${version.replace(/\./g, '-')}`;
+      execSync(`git checkout -b "${branchName}"`, { stdio: 'ignore' });
+      execSync('git add .', { stdio: 'ignore' });
+      execSync(`git commit -m "${commitMessage}"`, { stdio: 'ignore' });
+      execSync(`git push origin ${branchName}`, { stdio: 'ignore' });
+      execSync(`git checkout ${currentBranchName}`, { stdio: 'ignore' });
 
-        console.log('Preparing pull request...');
-        const commitMessage = `chore: publish ${version}`;
-        const branchName = `v${version.replace(/\./g, '-')}`;
-        execSync(`git checkout -b "${branchName}"`, { stdio: 'ignore' });
-        execSync('git add .', { stdio: 'ignore' });
-        execSync(`git commit -m "${commitMessage}"`, { stdio: 'ignore' });
-        execSync(`git push origin ${branchName}`, { stdio: 'ignore' });
-        execSync(`git checkout ${currentBranchName}`, { stdio: 'ignore' });
-
-        console.log();
-        console.log('--------------------');
-        console.log('Done!');
-        console.log();
-        console.log(`You have to pull request changes from branch ${branchName}!`);
-        console.log(`Don\'t forget to create a release on GitHub!`);
-        console.log('--------------------');
-        console.log();
-      });
+      console.log();
+      console.log('--------------------');
+      console.log('Done!');
+      console.log();
+      console.log(`You have to pull request changes from branch ${branchName}!`);
+      console.log(`Don\'t forget to create a release on GitHub!`);
+      console.log('--------------------');
+      console.log();
     });
   });
 });

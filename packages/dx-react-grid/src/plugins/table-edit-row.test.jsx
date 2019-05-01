@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { setupConsole } from '@devexpress/dx-testing';
 import { PluginHost } from '@devexpress/dx-react-core';
@@ -28,7 +28,6 @@ const defaultDeps = {
     rowChanges: [{ 1: { a: 'text' } }],
     getCellValue: jest.fn(),
     createRowChange: jest.fn(),
-    isColumnEditingEnabled: () => true,
   },
   action: {
     changeAddRow: jest.fn(),

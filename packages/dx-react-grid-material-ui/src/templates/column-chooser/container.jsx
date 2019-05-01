@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import List from 'material-ui/List';
 
 export const Container = ({ children, ...restProps }) => (
@@ -12,5 +12,5 @@ export const Container = ({ children, ...restProps }) => (
 );
 
 Container.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.array.isRequired,
 };

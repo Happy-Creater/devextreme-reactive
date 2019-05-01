@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TableSortLabel } from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
@@ -20,7 +20,7 @@ const styles = theme => ({
 });
 
 const SortingControlBase = ({
-  align, sortingDirection, columnTitle, onClick, classes, getMessage, disabled,
+  align, sortingDirection, columnTitle, onClick, classes, getMessage,
 }) => (
   <Tooltip
     title={getMessage('sortingHint')}
@@ -34,7 +34,6 @@ const SortingControlBase = ({
       active={!!sortingDirection}
       direction={sortingDirection}
       onClick={onClick}
-      disabled={disabled}
       classes={{
         root: classes.sortLabelRoot,
         active: classes.sortLabelActive,
@@ -52,12 +51,10 @@ SortingControlBase.propTypes = {
   classes: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
   getMessage: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
 };
 
 SortingControlBase.defaultProps = {
   sortingDirection: null,
-  disabled: false,
 };
 
 export const SortingControl = withStyles(styles, { name: 'SortingControl' })(SortingControlBase);

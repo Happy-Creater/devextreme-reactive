@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TableColumnVisibility as TableColumnVisibilityBase } from '@devexpress/dx-react-grid';
 import { EmptyMessage } from '../templates/empty-message';
 

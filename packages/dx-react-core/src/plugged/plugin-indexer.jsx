@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export const INDEXABLE_COMPONENT = Symbol('indexableComponent');
 
@@ -33,11 +33,14 @@ export const PluginIndexer = (
 );
 
 PluginIndexer.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };
 
 PluginIndexer.defaultProps = {
-  children: undefined,
+  children: null,
 };
 
 PluginIndexer.contextTypes = {

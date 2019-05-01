@@ -1,4 +1,6 @@
-import { setCurrentPage } from './reducers';
+import {
+  setCurrentPage,
+} from './reducers';
 
 describe('PagingState reducers', () => {
   describe('#setCurrentPage', () => {

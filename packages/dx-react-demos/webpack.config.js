@@ -23,10 +23,6 @@ module.exports = ({ production }) => ({
         enforce: "pre"
       },
       {
-        test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
-      },
-      {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components|public\/)/,
         use: ["babel-loader"]
@@ -39,7 +35,7 @@ module.exports = ({ production }) => ({
   },
   resolve: {
     modules: [path.join(__dirname, "node_modules"), "node_modules"],
-    extensions: [".webpack.js", ".web.js", ".js", ".jsx", ".ts", ".tsx"]
+    extensions: [".webpack.js", ".web.js", ".js", ".jsx"]
   },
   plugins: [
     new WriteFilePlugin(),
